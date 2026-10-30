@@ -16,6 +16,7 @@ import argparse
 import hashlib
 import json
 import os
+import subprocess
 import sys
 import urllib.error
 import urllib.parse
@@ -23,21 +24,35 @@ import urllib.request
 from pathlib import Path
 
 OWNER = "WEveboy"
-REPO = "Xunzi-Still"
+REPO = "Xunzi-Skill"
 TAG = "edition-v1.0.0"
 TITLE = "荀子思维操作系统 · 第一版 1.0.0"
 ROOT = Path(__file__).resolve().parent.parent
 DIST = ROOT / "dist"
 API = "https://api.github.com"
-UA = "Xunzi-Still-release-script/1.0"
+UA = "Xunzi-Skill-release-script/1.0"
 
 
 def token():
+    """优先环境变量，其次向 git 凭据管理器要（令牌已在 GCM 里时不经过磁盘与日志）。"""
     for k in ("GH_TOKEN", "GITHUB_TOKEN"):
         v = os.environ.get(k)
         if v and v.strip():
             return v.strip()
-    sys.exit("缺少令牌：请先 export GH_TOKEN=<PAT>（需 Contents: Read and write）")
+    try:
+        p = subprocess.run(
+            ["git", "credential", "fill"],
+            input=f"protocol=https\nhost=github.com\nusername={OWNER}\n\n",
+            capture_output=True, text=True, timeout=30,
+        )
+        for line in p.stdout.splitlines():
+            if line.startswith("password=") and len(line) > 12:
+                print("（令牌来源：git 凭据管理器）")
+                return line[len("password="):].strip()
+    except (OSError, subprocess.SubprocessError):
+        pass
+    sys.exit("缺少令牌：export GH_TOKEN=<PAT>（需 Contents: Read and write），"
+             "或先用 git push 让凭据管理器存一次")
 
 
 def api(method, path, tok, data=None, raw=None, ctype="application/json"):

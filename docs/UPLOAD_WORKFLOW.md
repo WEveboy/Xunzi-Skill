@@ -4,7 +4,7 @@
 
 - 上游流程：https://github.com/WEveboy/Boolean_Function_Analysis/blob/main/docs/UPLOAD_WORKFLOW.md
 - 参照仓库：https://github.com/WEveboy/The-Theory-of-Error-Correcting-Codes-skill
-- 本仓库：https://github.com/WEveboy/Xunzi-Still
+- 本仓库：https://github.com/WEveboy/Xunzi-Skill
 
 ## 六步
 

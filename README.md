@@ -1,4 +1,4 @@
-# Xunzi-Still · 荀子思维操作系统（第一版）
+# Xunzi-Skill · 荀子思维操作系统（第一版）
 
 从中华书局「全本全注全译」本《荀子》（方勇、李波 译注，2010）三十二篇蒸馏出的人物思维框架 Skill：6 个心智模型、9 条决策启发式、完整表达 DNA、6 对未解张力，外加 7 份逐字标注书页的调研记录。
 
@@ -22,7 +22,7 @@ python scripts/install_codex.py --dry-run  # 只看会装到哪
 
 **DeepSeek Harness**：需先装 dsh 与仓颉（cangjie）插件，再添加本项目的 TGZ 插件。普通 DeepSeek 网页对话**没有**本地 skill 加载能力，网页版不能替代 Harness。
 
-发行资产与校验文件见 [edition-v1.0.0 Release](https://github.com/WEveboy/Xunzi-Still/releases/tag/edition-v1.0.0)。若 Release 尚未显示，以实际发布记录为准——源码下载后也可按教程安装或自行打包。
+发行资产与校验文件见 [edition-v1.0.0 Release](https://github.com/WEveboy/Xunzi-Skill/releases/tag/edition-v1.0.0)。若 Release 尚未显示，以实际发布记录为准——源码下载后也可按教程安装或自行打包。
 
 ## 这个 Skill 有什么
 

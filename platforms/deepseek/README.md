@@ -1,6 +1,6 @@
 # dsh-xunzi-perspective
 
-Xunzi-Still 第一版（1.0.0）的 DeepSeek Harness 原生插件包。
+Xunzi-Skill 第一版（1.0.0）的 DeepSeek Harness 原生插件包。
 
 ## 它做什么
 
