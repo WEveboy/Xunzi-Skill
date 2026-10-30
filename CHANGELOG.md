@@ -1,5 +1,23 @@
 # 更新日志
 
+## 1.0.1 — 2026-10-30
+
+修安装器两处缺陷。**skill 本体未改**（`SKILL.md` 与 7 份调研记录哈希与 1.0.0 相同），只有安装器、版本号、教程里的包名变了。
+
+### 修复
+
+- **`--dry-run` 在目标已存在时直接报错**：原先「目标已存在就抛 ValueError」的判断排在干跑分支之前，导致教程推荐的第一步（先干跑看会装到哪）在装过 1.0.0 的机器上必然失败。现在干跑先于覆盖检查，返回 `target_exists` / `would_need_replace` 与一句提示，仍不写盘。
+- **错误路径抛 TypeError**：`sys.exit(2, "error: ...")` 里 `sys.exit` 只接受一个参数，于是「目标已存在，请加 --replace」这类本该可读的提示全变成 traceback。改为写 stderr 后 `return 2`，`__main__` 统一 `sys.exit(main())`。
+
+### 新增测试
+
+- `test_dry_run_works_when_target_exists`：已装环境下干跑必须成功且如实报告 `would_need_replace`
+- `test_cli_error_exits_2_without_traceback`：子进程跑 CLI，断言退出码 2、stderr 无 `Traceback`、含 `--replace`
+
+### 影响
+
+已装 1.0.0 的用户用 `python install_codex.py --replace` 升级即可；DeepSeek 插件包的注册合同无变化。
+
 ## 第一版 V1 / 1.0.0 — 2026-10-30
 
 将「荀子视角」从一次性的调研产物冻结为可安装、可校验、可回滚的第一版。

@@ -22,7 +22,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 DIST = ROOT / "dist"
-VERSION = "1.0.0"
+VERSION = "1.0.1"
 ok = 0
 fail = 0
 

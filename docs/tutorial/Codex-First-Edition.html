@@ -58,7 +58,7 @@ hr{border:none;border-top:0.6pt solid #d5d9de;margin:12pt 0}
   <h1>荀子思维操作系统<br>Codex 安装与使用教程</h1>
   <div class="sub">从零前置到第一次可用回答</div>
   <div class="meta">
-    公开版本：第一版 V1 / 1.0.0<br>
+    公开版本：第一版 V1 / 1.0.1<br>
     技能名：<code>xunzi-perspective</code>　安装形态：Codex skills 目录<br>
     底本：方勇、李波 译注《荀子》，中华书局 2010<br>
     教程日期：2026 年 10 月 30 日
@@ -164,10 +164,10 @@ hr{border:none;border-top:0.6pt solid #d5d9de;margin:12pt 0}
 <h2>第三章　安装</h2>
 
 <h3>3.1 先解压</h3>
-<p>下载 <code>xunzi-perspective-Codex-1.0.0.zip</code>，解压到一个你记得住的位置，例如：</p>
-<pre><code>C:\SkillLab\xunzi-perspective-Codex-1.0.0\</code></pre>
+<p>下载 <code>xunzi-perspective-Codex-1.0.1.zip</code>，解压到一个你记得住的位置，例如：</p>
+<pre><code>C:\SkillLab\xunzi-perspective-Codex-1.0.1\</code></pre>
 <p>解压后应看到这样的结构（缺一个都算解压不完整）：</p>
-<pre><code>xunzi-perspective-Codex-1.0.0\
+<pre><code>xunzi-perspective-Codex-1.0.1\
 ├── install_codex.py
 ├── INSTALL.md
 └── xunzi-perspective\
@@ -184,13 +184,13 @@ hr{border:none;border-top:0.6pt solid #d5d9de;margin:12pt 0}
 
 <h3>3.2 方式 A：安装器（推荐）</h3>
 <p>在解压目录里打开终端（PowerShell 或 CMD 均可），执行：</p>
-<pre><code>cd C:\SkillLab\xunzi-perspective-Codex-1.0.0
+<pre><code>cd C:\SkillLab\xunzi-perspective-Codex-1.0.1
 python install_codex.py</code></pre>
 <p>成功时输出形如：</p>
 <pre><code>{
   "status": "installed_and_verified",
   "edition": "荀子·思维操作系统",
-  "public_version": "1.0.0",
+  "public_version": "1.0.1",
   "target": "C:\\Users\\你\\.agents\\skills\\xunzi-perspective",
   "backup": null,
   "removed_from_previous": [],
@@ -453,13 +453,13 @@ python scripts\render_pages.py --chapter 天论 --span 3 --out .\pages</code></p
 </div>
 
 <h3>10.4 版本与校验</h3>
-<pre><code>certutil -hashfile xunzi-perspective-Codex-1.0.0.zip SHA256</code></pre>
+<pre><code>certutil -hashfile xunzi-perspective-Codex-1.0.1.zip SHA256</code></pre>
 <p>与 Release 页的 <code>SHA256SUMS.txt</code> 比对。<b>ZIP 的校验值对应 ZIP，TGZ 的对应 TGZ，不能混用。</b></p>
 
 <h3>10.5 项目与贡献者</h3>
 <p>
 仓库：<code>https://github.com/WEveboy/Xunzi-Skill</code><br>
-发行：<code>https://github.com/WEveboy/Xunzi-Skill/releases/tag/edition-v1.0.0</code><br>
+发行：<code>https://github.com/WEveboy/Xunzi-Skill/releases/tag/edition-v1.0.1</code><br>
 贡献者：WEveboy（发起、语料、流程与发布）· DeepSeek-V4.1（精读、提炼、撰写、验证）
 </p>
 <p class="small">

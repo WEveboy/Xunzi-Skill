@@ -2,10 +2,10 @@
   "project": "Xunzi-Skill",
   "display_name": "荀子思维操作系统·第一版",
   "repository": "https://github.com/WEveboy/Xunzi-Skill",
-  "public_version": "1.0.0",
+  "public_version": "1.0.1",
   "edition": 1,
-  "tag": "edition-v1.0.0",
-  "frozen_baseline": "1.0.0-dev",
+  "tag": "edition-v1.0.1",
+  "frozen_baseline": "1.0.1-dev",
   "skill_name": "xunzi-perspective",
   "capabilities": {
     "mental_models": 6,

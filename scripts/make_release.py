@@ -3,10 +3,10 @@
 """构建第一版全部发行资产到 dist/。
 
 产物：
-    xunzi-perspective-1.0.0-source.zip        仓库源码（不含 dist/ 与底本）
-    xunzi-perspective-Codex-1.0.0.zip          Codex 安装包（安装器 + skill + 教程）
-    dsh-xunzi-perspective-1.0.0.tgz            DeepSeek Harness 插件（npm 结构：package/）
-    xunzi-perspective-DeepSeek-1.0.0.zip       DS 完整包（TGZ + 两份教程 + 说明）
+    xunzi-perspective-1.0.1-source.zip        仓库源码（不含 dist/ 与底本）
+    xunzi-perspective-Codex-1.0.1.zip          Codex 安装包（安装器 + skill + 教程）
+    dsh-xunzi-perspective-1.0.1.tgz            DeepSeek Harness 插件（npm 结构：package/）
+    xunzi-perspective-DeepSeek-1.0.1.zip       DS 完整包（TGZ + 两份教程 + 说明）
     SHA256SUMS.txt                             上面四项的校验值
 
 写包用固定时间戳，保证同样的输入产出同样的字节（可复现构建）。
@@ -26,7 +26,7 @@ ROOT = Path(__file__).resolve().parent.parent
 SKILL = ROOT / "skills" / "xunzi-perspective"
 DIST = ROOT / "dist"
 STAGE = DIST / "stage"
-VERSION = "1.0.0"
+VERSION = "1.0.1"
 STAMP = (2026, 10, 30, 0, 0, 0)
 
 EXCLUDE_DIRS = {".git", "dist", "__pycache__", ".venv", "node_modules", "xunzi-pages", ".idea", ".vscode"}

@@ -2,8 +2,8 @@
   "skill": "xunzi-perspective",
   "display_name": "荀子·思维操作系统",
   "edition": 1,
-  "public_version": "1.0.0",
-  "frozen_baseline": "1.0.0-dev",
+  "public_version": "1.0.1",
+  "frozen_baseline": "1.0.1-dev",
   "generated_by": "scripts/rebuild_skill.py",
   "file_count": 12,
   "capabilities": {

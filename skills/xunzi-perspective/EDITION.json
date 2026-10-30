@@ -1,9 +1,9 @@
 {
   "project": "Xunzi Perspective Skill",
   "display_name": "荀子·思维操作系统",
-  "public_version": "1.0.0",
+  "public_version": "1.0.1",
   "edition": 1,
-  "frozen_baseline": "1.0.0-dev",
+  "frozen_baseline": "1.0.1-dev",
   "capabilities": {
     "mental_models": 6,
     "decision_heuristics": 9,

@@ -19,7 +19,7 @@
    ```
    并渲染两份教程 PDF 首页，核对中文、代码块、表格未错版；检查 README 内相对链接均可达。
 4. **再读远端后提交。** 提交前重新 `git ls-remote` 确认远端未变；对已有分支用预期 SHA 约束（`git push --force-with-lease` 而非 `--force`），禁止强覆盖他人改动。提交后核对提交 SHA、文件清单与关键页面。
-5. **发版。** tag 采用 `edition-v1.0.0` 格式。资产：Codex ZIP、DeepSeek TGZ + ZIP、源码 ZIP、`SHA256SUMS`。**逐个下载回来核验 SHA256** 并做安装烟测。资产未上传成功时，不得在 README 或日志里描述为"已发布"。
+5. **发版。** tag 采用 `edition-v1.0.1` 格式。资产：Codex ZIP、DeepSeek TGZ + ZIP、源码 ZIP、`SHA256SUMS`。**逐个下载回来核验 SHA256** 并做安装烟测。资产未上传成功时，不得在 README 或日志里描述为"已发布"。
 6. **收尾。** 更新 README 下载入口、`CHANGELOG.md`、`release-info.json`；记录提交 SHA、资产哈希、未完成事项。后续版本沿用本流程；改版本号时先明确 tag 与新版本的关系，再发布。
 
 ## 本仓库的具体约定

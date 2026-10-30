@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""用 GitHub API 创建 edition-v1.0.0 发行并上传 dist/ 资产，然后逐个下载核验 SHA256。
+"""用 GitHub API 创建 edition-v1.0.1 发行并上传 dist/ 资产，然后逐个下载核验 SHA256。
 
 令牌只从环境变量读，不接受命令行参数（避免进 shell 历史），也绝不打印。
 
@@ -26,8 +26,8 @@ from pathlib import Path
 
 OWNER = "WEveboy"
 REPO = "Xunzi-Skill"
-TAG = "edition-v1.0.0"
-TITLE = "荀子思维操作系统 · 第一版 1.0.0"
+TAG = "edition-v1.0.1"
+TITLE = "荀子思维操作系统 · 第一版 1.0.1"
 ROOT = Path(__file__).resolve().parent.parent
 DIST = ROOT / "dist"
 API = "https://api.github.com"
@@ -100,10 +100,10 @@ def sha256(p):
 
 def assets():
     order = [
-        f"xunzi-perspective-Codex-1.0.0.zip",
-        f"dsh-xunzi-perspective-1.0.0.tgz",
-        f"xunzi-perspective-DeepSeek-1.0.0.zip",
-        f"xunzi-perspective-1.0.0-source.zip",
+        f"xunzi-perspective-Codex-1.0.1.zip",
+        f"dsh-xunzi-perspective-1.0.1.tgz",
+        f"xunzi-perspective-DeepSeek-1.0.1.zip",
+        f"xunzi-perspective-1.0.1-source.zip",
         "SHA256SUMS.txt",
     ]
     out = [DIST / n for n in order]
@@ -139,7 +139,7 @@ def main():
 
     if not a.verify_only:
         # 1. 建发行（已存在则复用）
-        body = (ROOT / "docs" / "RELEASE_NOTES-v1.0.0.md").read_text(encoding="utf-8")
+        body = (ROOT / "docs" / "RELEASE_NOTES-v1.0.1.md").read_text(encoding="utf-8")
         code, rel = api("POST", f"/repos/{OWNER}/{REPO}/releases", tok, data={
             "tag_name": TAG, "name": TITLE, "body": body,
             "draft": a.draft, "prerelease": False,

@@ -1,6 +1,6 @@
 # dsh-xunzi-perspective
 
-Xunzi-Skill 第一版（1.0.0）的 DeepSeek Harness 原生插件包。
+Xunzi-Skill 第一版（1.0.1）的 DeepSeek Harness 原生插件包。
 
 ## 它做什么
 
@@ -18,7 +18,7 @@ Xunzi-Skill 第一版（1.0.0）的 DeepSeek Harness 原生插件包。
 ## 安装
 
 ```powershell
-dsh plugin --profile web add .\dsh-xunzi-perspective-1.0.0.tgz
+dsh plugin --profile web add .\dsh-xunzi-perspective-1.0.1.tgz
 dsh web
 ```
 
@@ -27,7 +27,7 @@ dsh web
 ## 不装 Harness 也能查看内容
 
 ```powershell
-tar -xzf .\dsh-xunzi-perspective-1.0.0.tgz -C C:\SkillLab\xunzi
+tar -xzf .\dsh-xunzi-perspective-1.0.1.tgz -C C:\SkillLab\xunzi
 ```
 
 解压后内容在 `C:\SkillLab\xunzi\package\`，`skills\xunzi-perspective\references\quickstart.md` 可直接阅读。

@@ -17,9 +17,9 @@ from pathlib import Path
 
 NAME = "xunzi-perspective"
 DISPLAY = "荀子·思维操作系统"
-PUBLIC_VERSION = "1.0.0"
+PUBLIC_VERSION = "1.0.1"
 EDITION = 1
-BASELINE = "1.0.0-dev"          # 第一版冻结时指向自身
+BASELINE = "1.0.1-dev"          # 第一版冻结时指向自身
 ROOT = Path(__file__).resolve().parent.parent
 SKILL = ROOT / "skills" / NAME
 

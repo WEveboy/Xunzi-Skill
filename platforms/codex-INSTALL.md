@@ -5,8 +5,8 @@
 ## 三步装完
 
 ```bat
-:: 1. 解压到一个你记得住的位置，例如 C:\SkillLab\xunzi-perspective-Codex-1.0.0
-cd C:\SkillLab\xunzi-perspective-Codex-1.0.0
+:: 1. 解压到一个你记得住的位置，例如 C:\SkillLab\xunzi-perspective-Codex-1.0.1
+cd C:\SkillLab\xunzi-perspective-Codex-1.0.1
 
 :: 2. 先干跑一次，看清会装到哪（一个字节都不写）
 python install_codex.py --dry-run

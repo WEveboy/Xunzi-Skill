@@ -66,21 +66,27 @@ def install(root=None, replace=False, dry_run=False):
 
     if target.is_symlink():
         raise ValueError("目标是指向别处的符号链接，拒绝写入；请用 --destination 指定独立目录")
+
+    # 干跑必须走完所有检查再返回，否则「先跑 --dry-run 看看会装到哪」这条
+    # 在已装过的机器上就永远失败——而这恰恰是最需要先看一眼的场景。
+    if dry_run:
+        return {
+            "status": "dry_run_ok",
+            "source": str(source),
+            "target": str(target),
+            "target_exists": target.exists(),
+            "would_backup": target.exists(),
+            "would_need_replace": target.exists(),
+            "files": len(edition["files"]),
+            "note": "未写盘。目标已存在时要真装请加 --replace（会先备份）。" if target.exists() else "未写盘。可直接安装。",
+        }
+
     if target.exists() and not replace:
         raise ValueError(
             "目标已存在：" + str(target) + "\n"
             "  · 只想看是否装成功：读该目录下的 references/quickstart.md\n"
             "  · 确实要升级：加 --replace（会先备份）"
         )
-
-    if dry_run:
-        return {
-            "status": "dry_run_ok",
-            "source": str(source),
-            "target": str(target),
-            "files": len(edition["files"]),
-            "would_backup": target.exists(),
-        }
 
     backup = None
     removed = []
@@ -140,9 +146,13 @@ def main():
     try:
         result = install(a.destination, a.replace, a.dry_run)
     except (ValueError, OSError) as e:
-        sys.exit(2, "error: " + str(e) + "\n")
+        # sys.exit 只接受一个参数；写成 sys.exit(2, msg) 会抛 TypeError，
+        # 把「目标已存在，请加 --replace」这类本该可读的提示变成 traceback。
+        sys.stderr.write("error: " + str(e) + "\n")
+        return 2
     print(json.dumps(result, ensure_ascii=False, indent=2))
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

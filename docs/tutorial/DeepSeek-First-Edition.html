@@ -55,8 +55,8 @@ hr{border:none;border-top:0.6pt solid #d5d9de;margin:12pt 0}
   <h1>荀子思维操作系统<br>DeepSeek Harness 安装与使用教程</h1>
   <div class="sub">从安装 dsh 到第一次可用回答</div>
   <div class="meta">
-    公开版本：第一版 V1 / 1.0.0<br>
-    插件包：<code>dsh-xunzi-perspective-1.0.0.tgz</code><br>
+    公开版本：第一版 V1 / 1.0.1<br>
+    插件包：<code>dsh-xunzi-perspective-1.0.1.tgz</code><br>
     注册名：<code>dsh-xunzi-perspective</code>　技能名：<code>xunzi-perspective</code><br>
     底本：方勇、李波 译注《荀子》，中华书局 2010<br>
     教程日期：2026 年 10 月 30 日
@@ -164,18 +164,18 @@ dsh web</code></pre>
 <table>
 <thead><tr><th style="width:42%">资产</th><th>用途</th></tr></thead>
 <tbody>
-<tr><td><code>xunzi-perspective-DeepSeek-1.0.0.zip</code></td><td>完整包：内含 TGZ + 两份教程 + 说明。只想装插件不必下它</td></tr>
-<tr><td><code>dsh-xunzi-perspective-1.0.0.tgz</code></td><td><b>只装插件就用这个</b></td></tr>
+<tr><td><code>xunzi-perspective-DeepSeek-1.0.1.zip</code></td><td>完整包：内含 TGZ + 两份教程 + 说明。只想装插件不必下它</td></tr>
+<tr><td><code>dsh-xunzi-perspective-1.0.1.tgz</code></td><td><b>只装插件就用这个</b></td></tr>
 <tr><td><code>SHA256SUMS.txt</code></td><td>所有资产的校验值</td></tr>
 </tbody>
 </table>
 
 <h3>4.2 核对哈希</h3>
-<pre><code>Get-FileHash .\dsh-xunzi-perspective-1.0.0.tgz -Algorithm SHA256</code></pre>
+<pre><code>Get-FileHash .\dsh-xunzi-perspective-1.0.1.tgz -Algorithm SHA256</code></pre>
 <p>与 <code>SHA256SUMS.txt</code> 中<b>同名那一行</b>比对。ZIP 的校验值对应 ZIP，TGZ 的对应 TGZ，<b>不能混用</b>。</p>
 
 <h3>4.3 注册插件</h3>
-<pre><code>dsh plugin --profile web add .\dsh-xunzi-perspective-1.0.0.tgz
+<pre><code>dsh plugin --profile web add .\dsh-xunzi-perspective-1.0.1.tgz
 dsh web</code></pre>
 <p>两个名字要分清：</p>
 <table>
@@ -316,7 +316,7 @@ A. 全员平均发奖金；B. 只奖业绩前三；C. 按岗位定级发固定�
 dsh plugin --profile web &lt;remove 子命令&gt; dsh-xunzi-perspective
 
 :: 再装新的
-dsh plugin --profile web add .\dsh-xunzi-perspective-1.0.0.tgz
+dsh plugin --profile web add .\dsh-xunzi-perspective-1.0.1.tgz
 dsh web</code></pre>
 <p class="small">升级后按第五章重新验证一遍。插件包是整份替换，不存在"部分更新"。</p>
 
@@ -331,7 +331,7 @@ dsh web</code></pre>
 
 <h3>11.1 解压 TGZ 看内容（最简单）</h3>
 <pre><code>New-Item -ItemType Directory -Force C:\SkillLab\xunzi | Out-Null
-tar -xzf .\dsh-xunzi-perspective-1.0.0.tgz -C C:\SkillLab\xunzi</code></pre>
+tar -xzf .\dsh-xunzi-perspective-1.0.1.tgz -C C:\SkillLab\xunzi</code></pre>
 <p>解压后应看到：</p>
 <pre><code>C:\SkillLab\xunzi\package\
 ├── index.mjs
@@ -411,7 +411,7 @@ py -3 scripts\render_pages.py --chapter 天论 --span 3 --out .\pages</code></pr
 <h3>12.4 项目与贡献者</h3>
 <p>
 仓库：<code>https://github.com/WEveboy/Xunzi-Skill</code><br>
-发行：<code>https://github.com/WEveboy/Xunzi-Skill/releases/tag/edition-v1.0.0</code><br>
+发行：<code>https://github.com/WEveboy/Xunzi-Skill/releases/tag/edition-v1.0.1</code><br>
 贡献者：WEveboy（发起、语料、流程与发布）· DeepSeek-V4.1（精读、提炼、撰写、验证）
 </p>
 <p class="small">本 skill 由「女娲 · Skill 造人术」流程生成：五路并行精读底本（逐字抄录原文并标书页）+ 外部考据 → 心智模型三重验证 → 构建 → 静态质检 6/6 → 独立盲测四题并据反馈修订。</p>

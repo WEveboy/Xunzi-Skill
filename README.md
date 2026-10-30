@@ -8,8 +8,8 @@
 
 | 平台 | 教程 | 安装包 |
 |---|---|---|
-| **Codex** | [Codex 安装版教程](docs/tutorial/Codex-First-Edition.pdf) | `xunzi-perspective-codex-v1.0.0.zip` |
-| **DeepSeek Harness** | [DeepSeek 安装版教程](docs/tutorial/DeepSeek-First-Edition.pdf) | `xunzi-perspective-deepseek-v1.0.0.tgz` / `.zip` |
+| **Codex** | [Codex 安装版教程](docs/tutorial/Codex-First-Edition.pdf) | `xunzi-perspective-codex-v1.0.1.zip` |
+| **DeepSeek Harness** | [DeepSeek 安装版教程](docs/tutorial/DeepSeek-First-Edition.pdf) | `xunzi-perspective-deepseek-v1.0.1.tgz` / `.zip` |
 
 两份教程都从「零前置」开始，覆盖：前置检查 → 安装（脚本法 + 手工法）→ 验证加载成功 → 首跑三例 → 三种问法 → 退出角色 → 常见错误 → 升级/回滚/卸载。
 
@@ -22,7 +22,7 @@ python scripts/install_codex.py --dry-run  # 只看会装到哪
 
 **DeepSeek Harness**：需先装 dsh 与仓颉（cangjie）插件，再添加本项目的 TGZ 插件。普通 DeepSeek 网页对话**没有**本地 skill 加载能力，网页版不能替代 Harness。
 
-发行资产与校验文件已发布在 [edition-v1.0.0 Release](https://github.com/WEveboy/Xunzi-Skill/releases/tag/edition-v1.0.0)（5 个资产，均已回下载核验 SHA256）。源码下载后也可按教程安装或自行打包。
+发行资产与校验文件已发布在 [edition-v1.0.1 Release](https://github.com/WEveboy/Xunzi-Skill/releases/tag/edition-v1.0.1)（5 个资产，均已回下载核验 SHA256）。源码下载后也可按教程安装或自行打包。
 
 ## 这个 Skill 有什么
 

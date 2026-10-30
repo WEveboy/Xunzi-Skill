@@ -78,6 +78,28 @@ class InstallerTests(unittest.TestCase):
         self.assertEqual(result["status"], "dry_run_ok")
         self.assertFalse(self.root.exists())
 
+    def test_dry_run_works_when_target_exists(self):
+        """已装过的机器上，--dry-run 仍要能跑——教程推荐的第一步就是这个场景。"""
+        installer.install(self.root)
+        result = installer.install(self.root, dry_run=True)
+        self.assertEqual(result["status"], "dry_run_ok")
+        self.assertTrue(result["target_exists"])
+        self.assertTrue(result["would_need_replace"])
+
+    def test_cli_error_exits_2_without_traceback(self):
+        """错误路径必须给人话，不能是 TypeError traceback。"""
+        import subprocess
+
+        installer.install(self.root)
+        proc = subprocess.run(
+            [sys.executable, str(ROOT / "scripts" / "install_codex.py"),
+             "--destination", str(self.root)],
+            capture_output=True, text=True,
+        )
+        self.assertEqual(proc.returncode, 2)
+        self.assertNotIn("Traceback", proc.stderr)
+        self.assertIn("--replace", proc.stderr)
+
     # ---- 完整性 ----
     def test_source_tamper_detected(self):
         fake = self.tmp / "fake-skill"
