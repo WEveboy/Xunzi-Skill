@@ -1,0 +1,22 @@
+{
+  "skill": "xunzi-perspective",
+  "display_name": "荀子·思维操作系统",
+  "edition": 1,
+  "public_version": "1.0.0",
+  "frozen_baseline": "1.0.0-dev",
+  "generated_by": "scripts/rebuild_skill.py",
+  "file_count": 12,
+  "capabilities": {
+    "mental_models": 6,
+    "decision_heuristics": 9,
+    "unresolved_tensions": 6,
+    "research_documents": 7,
+    "runtime_programs": 1
+  },
+  "runtime": {
+    "python": ">=3.9（仅 scripts/render_pages.py 需要；需 pypdfium2）",
+    "node": null,
+    "skill_core": "纯 Markdown，无运行时依赖"
+  },
+  "source_policy": "底本《荀子》（方勇、李波 译注，中华书局 2010）受版权保护，不随包分发。"
+}

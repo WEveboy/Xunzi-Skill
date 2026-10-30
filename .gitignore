@@ -1,0 +1,23 @@
+# 构建产物与发行资产
+dist/
+
+# 底本（版权，不入库）
+skills/xunzi-perspective/references/sources/
+*.pdf
+!docs/tutorial/*.pdf
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+
+# 渲染输出
+xunzi-pages/
+*.png
+
+# 系统与编辑器
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/

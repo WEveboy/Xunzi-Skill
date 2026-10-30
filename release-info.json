@@ -1,0 +1,32 @@
+{
+  "project": "Xunzi-Still",
+  "display_name": "荀子思维操作系统·第一版",
+  "repository": "https://github.com/WEveboy/Xunzi-Still",
+  "public_version": "1.0.0",
+  "edition": 1,
+  "tag": "edition-v1.0.0",
+  "frozen_baseline": "1.0.0-dev",
+  "skill_name": "xunzi-perspective",
+  "capabilities": {
+    "mental_models": 6,
+    "decision_heuristics": 9,
+    "unresolved_tensions": 6,
+    "honest_boundaries": 9,
+    "research_documents": 7,
+    "runtime_programs": 1
+  },
+  "baseline_tests": {
+    "python_unittest": 10,
+    "node_contract": 5,
+    "quality_check": "6/6",
+    "blind_test": "4 题（3 已知立场 + 1 边缘）+ 风格测试"
+  },
+  "platforms": ["codex", "deepseek-harness"],
+  "tutorials": {
+    "codex": "docs/tutorial/Codex-First-Edition.pdf",
+    "deepseek": "docs/tutorial/DeepSeek-First-Edition.pdf"
+  },
+  "contributors": ["WEveboy", "DeepSeek-V4.1"],
+  "source_policy": "底本《荀子》（方勇、李波 译注，中华书局 2010）受版权保护，不随仓库与发行资产分发。",
+  "license": "未指定（不新增 LICENSE；上游依赖按上游许可自行安装）"
+}

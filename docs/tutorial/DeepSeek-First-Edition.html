@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>Xunzi-Still · DeepSeek Harness 安装与使用教程（第一版）</title>
+<style>
+@page { size: A4; margin: 17mm 15mm 16mm; }
+* { box-sizing: border-box; }
+body{
+  font-family:"Microsoft YaHei","PingFang SC","SimSun",sans-serif;
+  font-size:10.5pt; line-height:1.72; color:#1a1a1a; margin:0;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1{font-size:19pt;line-height:1.35;margin:0 0 6pt;color:#111}
+h2{font-size:14pt;margin:20pt 0 8pt;padding-bottom:4pt;border-bottom:1.6pt solid #222;page-break-after:avoid}
+h3{font-size:11.5pt;margin:13pt 0 5pt;color:#222;page-break-after:avoid}
+h4{font-size:10.5pt;margin:10pt 0 4pt;color:#333}
+p{margin:5pt 0;text-align:justify}
+ul,ol{margin:5pt 0;padding-left:19pt}
+li{margin:2.5pt 0}
+code{font-family:Consolas,"Courier New",monospace;background:#f1f3f5;padding:.5pt 3pt;border-radius:2pt;font-size:9.3pt}
+pre{
+  font-family:Consolas,"Courier New",monospace;background:#f7f8f9;border:0.6pt solid #dcdfe3;
+  border-left:2.6pt solid #3f6f8a;border-radius:2pt;padding:7pt 9pt;margin:6pt 0;
+  font-size:9pt;line-height:1.55;white-space:pre-wrap;word-break:break-all;page-break-inside:avoid
+}
+pre code{background:none;padding:0;font-size:9pt}
+table{border-collapse:collapse;width:100%;margin:7pt 0;font-size:9.4pt;page-break-inside:avoid}
+th,td{border:0.6pt solid #c9ced6;padding:4pt 6pt;vertical-align:top;text-align:left}
+th{background:#eef1f5;font-weight:600}
+tbody tr:nth-child(even){background:#fafbfc}
+.cover{height:245mm;display:flex;flex-direction:column;justify-content:center;page-break-after:always}
+.cover .tag{font-size:9.5pt;letter-spacing:2pt;color:#3f6f8a;margin-bottom:14pt}
+.cover h1{font-size:26pt;line-height:1.3;margin-bottom:8pt}
+.cover .sub{font-size:13pt;color:#3d4a5c;margin-bottom:26pt}
+.cover .meta{font-size:9.5pt;color:#4a5568;line-height:1.95;border-top:1.6pt solid #222;padding-top:10pt;max-width:130mm}
+.cover .promise{margin-top:16pt;font-size:9.6pt;background:#f4f7f9;border-left:3pt solid #3f6f8a;padding:8pt 11pt;max-width:150mm}
+.note{background:#f4f7f9;border-left:3pt solid #3f6f8a;padding:7pt 10pt;margin:7pt 0;font-size:9.6pt;page-break-inside:avoid}
+.warn{background:#fdf6ee;border-left:3pt solid #c07b3a;padding:7pt 10pt;margin:7pt 0;font-size:9.6pt;page-break-inside:avoid}
+.try{background:#f3f8f3;border-left:3pt solid #4a8055;padding:7pt 10pt;margin:7pt 0;font-size:9.6pt;page-break-inside:avoid}
+.k{font-weight:600;color:#111}
+.small{font-size:9pt;color:#555}
+hr{border:none;border-top:0.6pt solid #d5d9de;margin:12pt 0}
+.toc ol{list-style:none;padding-left:0;font-size:10pt}
+.toc ol li{margin:3.5pt 0}
+.toc .n{display:inline-block;width:20pt;color:#3f6f8a}
+.newpage{page-break-before:always}
+</style>
+</head>
+<body>
+
+<!-- ============ 封面 ============ -->
+<div class="cover">
+  <div class="tag">XUNZI-STILL · EDITION 1</div>
+  <h1>荀子思维操作系统<br>DeepSeek Harness 安装与使用教程</h1>
+  <div class="sub">从安装 dsh 到第一次可用回答</div>
+  <div class="meta">
+    公开版本：第一版 V1 / 1.0.0<br>
+    插件包：<code>dsh-xunzi-perspective-1.0.0.tgz</code><br>
+    注册名：<code>dsh-xunzi-perspective</code>　技能名：<code>xunzi-perspective</code><br>
+    底本：方勇、李波 译注《荀子》，中华书局 2010<br>
+    教程日期：2026 年 10 月 30 日
+  </div>
+  <div class="promise">
+    <b>完成本教程后，你应能：</b>装好 dsh 宿主与仓颉插件、把荀子插件注册进去、验证它真的被加载、问出第一个能看出「像荀子」的回答、在它跑偏时一句话拉回来、在装坏时退回上一版。<br>
+    本教程给的是<b>可复制命令 + 预期结果 + 失败判据</b>，并明确标注哪些命令需要在你的版本上用 <code>--help</code> 复核。
+  </div>
+</div>
+
+<!-- ============ 目录 ============ -->
+<h2 style="margin-top:0">目录</h2>
+<div class="toc">
+<ol>
+  <li><span class="n">一</span>先分清三件事：模型、网页、Harness</li>
+  <li><span class="n">二</span>前置检查与安装 dsh 宿主</li>
+  <li><span class="n">三</span>先装仓颉 cangjie-skill</li>
+  <li><span class="n">四</span>安装荀子插件</li>
+  <li><span class="n">五</span>验证：怎么确认它真的被加载了</li>
+  <li><span class="n">六</span>首跑四例：判断、拆解、对质、边缘</li>
+  <li><span class="n">七</span>读懂它的回答：四段式与五个验收问题</li>
+  <li><span class="n">八</span>长对话不掉人设与退出角色</li>
+  <li><span class="n">九</span>常见错误速查</li>
+  <li><span class="n">十</span>升级、回滚、卸载</li>
+  <li><span class="n">十一</span>不装 Harness 也能用：纯本地路径</li>
+  <li><span class="n">十二</span>附录：文件清单、篇名页码表、引文核对</li>
+</ol>
+</div>
+
+<!-- ============ 第一章 ============ -->
+<h2>第一章　先分清三件事：模型、网页、Harness</h2>
+
+<h3>1.1 三样东西，作用不同</h3>
+<table>
+<thead><tr><th style="width:20%">名字</th><th style="width:34%">是什么</th><th>能不能加载这个 skill</th></tr></thead>
+<tbody>
+<tr><td><b>模型</b></td><td>DeepSeek 的语言模型本身</td><td>不能。模型不读文件系统</td></tr>
+<tr><td><b>网页版</b></td><td>chat.deepseek.com 的对话界面</td><td><b>不能。</b>没有本地文件读写与插件机制</td></tr>
+<tr><td><b>Harness（dsh）</b></td><td>可加载技能、调用本地工具的宿主</td><td><b>能。</b>本教程走这条路</td></tr>
+</tbody>
+</table>
+
+<div class="warn">
+<b>最容易踩的坑：</b>在 DeepSeek 网页对话框里粘贴 <code>SKILL.md</code> 全文，以为"这样就装上了"。那只是把一段很长的文本塞进上下文，没有触发机制、没有资源目录、没有版本校验，长对话一压缩就丢。要用这个 skill，请走 Harness。
+</div>
+
+<h3>1.2 它装进去的是什么</h3>
+<p>一个插件包。dsh 启动时加载它，插件把 <code>SKILL.md</code> 的正文（剥离 frontmatter 后）注册为一个名为 <code>xunzi-perspective</code> 的技能，并把资源目录（<code>references/</code>、<code>scripts/</code>）指给宿主。之后你提问，宿主按需读取这些资源。</p>
+
+<!-- ============ 第二章 ============ -->
+<h2>第二章　前置检查与安装 dsh 宿主</h2>
+
+<h3>2.1 检查三样东西</h3>
+<p>打开 PowerShell，逐条执行：</p>
+<pre><code>py -3 --version
+node --version
+npm --version</code></pre>
+<p>要求：</p>
+<table>
+<thead><tr><th style="width:18%">项目</th><th style="width:30%">要求</th><th>没有怎么办</th></tr></thead>
+<tbody>
+<tr><td>Python</td><td>3.10 及以上</td><td>只影响"回原书核对页码"这一可选功能；不装也能用 skill</td></tr>
+<tr><td>Node.js</td><td><b>24 系列</b>，或满足宿主要求的更高版本</td><td>去 <code>https://nodejs.org/</code> 安装，装完<b>重开终端</b>；本插件 <code>engines</code> 声明为 <code>^22.19.0 || &gt;=24.0.0</code></td></tr>
+<tr><td>npm</td><td>随 Node 附带</td><td>同上</td></tr>
+</tbody>
+</table>
+<div class="note">版本号必须真的打出来。命令报"不是内部或外部命令"，说明 PATH 没生效——重开终端，不要继续往下装。</div>
+
+<h3>2.2 安装 Harness</h3>
+<p>本教程按 2026-10-27 核对到的官方 npm 版本给出可重复命令：</p>
+<pre><code>npm install -g @deepseek-ai/dsh@0.2.1-rc.2
+dsh --help</code></pre>
+<p>不想全局安装时，可用 <code>npx @deepseek-ai/dsh@0.2.1-rc.2</code> 替代下文所有 <code>dsh</code> 前缀。</p>
+<div class="warn">
+<b>Harness 处于开发预览。</b><a href="https://github.com/deepseek-ai/deepseek-harness">官方仓库</a>随时可能改命令或插件合同。本教程的命令在写作时可用；你若装的是更新版本，<b>以 <code>dsh --help</code> 与实际输出为准</b>，不要硬套本文截图里的说法。
+</div>
+
+<!-- ============ 第三章 ============ -->
+<h2>第三章　先装仓颉 cangjie-skill</h2>
+
+<h3>3.1 为什么必须先装它</h3>
+<p>本插件走的是 dsh 的 bundle/patch 机制，而 dsh 侧负责扫描与管理技能的是仓颉插件。没有仓颉，<code>skills</code> 服务不存在，本插件的 <code>apply()</code> 拿不到 <code>context.skills</code>，注册会失败。<b>顺序不能颠倒。</b></p>
+<p class="small">官方仓颉地址：<code>https://github.com/kangarooking/cangjie-skill</code>　注意拼写是 <b>cangjie</b>。</p>
+
+<h3>3.2 下载并核对哈希</h3>
+<p>打开仓颉 v2.5.0 的 Release 页，下载两个文件：</p>
+<pre><code>dsh-cangjie-skill-2.5.0.tgz
+dsh-cangjie-skill-2.5.0.tgz.sha256</code></pre>
+<p>在文件所在目录运行：</p>
+<pre><code>Get-FileHash .\dsh-cangjie-skill-2.5.0.tgz -Algorithm SHA256</code></pre>
+<p>与 <code>.sha256</code> 文件里的值逐字符比对。<b>不一致就停</b>，重新下载；不要"先装上再说"。</p>
+
+<h3>3.3 安装并启动</h3>
+<pre><code>dsh plugin --profile web add .\dsh-cangjie-skill-2.5.0.tgz
+dsh web</code></pre>
+<div class="note">
+<b>关于 profile。</b><code>web</code> 是本教程使用的配置档。若你用桌面宿主，必须换成该宿主实际使用的 profile——<b>不能把"已写入 web"当成"desktop 也加载了"</b>。这是「装了没反应」的第二大原因。
+</div>
+<p>首次启动时，在宿主的模型配置处选择服务商并完成授权。<b>密钥只进宿主配置</b>，不要写进任何项目文件、日志或仓库。</p>
+
+<!-- ============ 第四章 ============ -->
+<h2>第四章　安装荀子插件</h2>
+
+<h3>4.1 选对资产</h3>
+<table>
+<thead><tr><th style="width:42%">资产</th><th>用途</th></tr></thead>
+<tbody>
+<tr><td><code>xunzi-perspective-DeepSeek-1.0.0.zip</code></td><td>完整包：内含 TGZ + 两份教程 + 说明。只想装插件不必下它</td></tr>
+<tr><td><code>dsh-xunzi-perspective-1.0.0.tgz</code></td><td><b>只装插件就用这个</b></td></tr>
+<tr><td><code>SHA256SUMS.txt</code></td><td>所有资产的校验值</td></tr>
+</tbody>
+</table>
+
+<h3>4.2 核对哈希</h3>
+<pre><code>Get-FileHash .\dsh-xunzi-perspective-1.0.0.tgz -Algorithm SHA256</code></pre>
+<p>与 <code>SHA256SUMS.txt</code> 中<b>同名那一行</b>比对。ZIP 的校验值对应 ZIP，TGZ 的对应 TGZ，<b>不能混用</b>。</p>
+
+<h3>4.3 注册插件</h3>
+<pre><code>dsh plugin --profile web add .\dsh-xunzi-perspective-1.0.0.tgz
+dsh web</code></pre>
+<p>两个名字要分清：</p>
+<table>
+<thead><tr><th style="width:32%">名字</th><th>用在哪</th></tr></thead>
+<tbody>
+<tr><td><code>dsh-xunzi-perspective</code></td><td>插件注册名。装/卸插件、看插件列表时用它</td></tr>
+<tr><td><code>xunzi-perspective</code></td><td>技能名。模型调用、你在对话里提到「用荀子视角」时对应它</td></tr>
+</tbody>
+</table>
+<p class="small">它与仓颉是两个独立插件，互不替代。</p>
+
+<!-- ============ 第五章 ============ -->
+<h2>第五章　验证：怎么确认它真的被加载了</h2>
+
+<h3>5.1 三步验证</h3>
+<ol>
+<li><b>插件已注册</b>：重启 <code>dsh web</code> 后，看启动日志或插件列表里有没有 <code>dsh-xunzi-perspective</code>。<span class="small">（列表子命令因版本而异，先跑 <code>dsh plugin --help</code> 看当前版本怎么写。）</span></li>
+<li><b>profile 对得上</b>：你现在启动的是 <code>web</code>，装的时候也是 <code>web</code>。</li>
+<li><b>新开一个任务</b>再测。旧会话不会自动加载新装的插件。</li>
+</ol>
+
+<h3>5.2 首问</h3>
+<pre><code>用荀子的视角看：一个团队里最能干的人为什么总被排挤？</code></pre>
+<p>或者显式点名技能：</p>
+<pre><code>使用 xunzi-perspective 技能，回答：……</code></pre>
+
+<h3>5.3 成功与失败的判据</h3>
+<table>
+<thead><tr><th style="width:50%">看到这些 = 成功</th><th>看到这些 = 没加载</th></tr></thead>
+<tbody>
+<tr><td>第一句就是判断（如「凡挤能者，非恶其能，恶其无分」）</td><td>「这是个很常见的问题」之类铺垫</td></tr>
+<tr><td>中间分档，且说明按什么轴分</td><td>三条并列建议，无轴</td></tr>
+<tr><td>引原书句子并标篇名（《富国》）</td><td>只讲道理，不引原文</td></tr>
+<tr><td>结尾是反问或命名</td><td>「综上所述」「希望有帮助」</td></tr>
+</tbody>
+</table>
+<p class="small">四条全中 → 装好了。只中第一条 → 看第八章。一条都不中 → 回 5.1 查 profile 与插件注册。</p>
+
+<!-- ============ 第六章 ============ -->
+<h2>第六章　首跑四例</h2>
+
+<h3>例 1　判断类</h3>
+<pre><code>以荀卿论之：我们该不该把客服团队整体外包？</code></pre>
+<p>看点：四段是否齐全（断语 / 分档 / 证据 / 收束），而不是结论合不合你意。</p>
+
+<h3>例 2　拆解类：要判准，不要结论</h3>
+<pre><code>用荀子的分档法，把这三种激励方案排一下档，并说明每档缺什么：
+A. 全员平均发奖金；B. 只奖业绩前三；C. 按岗位定级发固定薪。</code></pre>
+<div class="try"><b>关键验收点：</b>它必须给出<b>一条轴</b>，并让三档<b>不能互换顺序</b>。若只把 A/B/C 各点评一遍，那是列清单——直接说「重排，给出轴」。</div>
+
+<h3>例 3　对质类</h3>
+<pre><code>有人说「人性本善，制度只要顺着人性就行」。荀子会怎么驳？</code></pre>
+<p>预期动作：先拆「顺」字（顺谁、顺到哪一步），再用「顺是」二字指出——荀子说的不是"现在就在争"，而是<b>放任这条倾向必导向争</b>。这是趋势命题，不是现状命题。</p>
+
+<h3>例 4　边缘题：看它老不老实</h3>
+<pre><code>荀子会怎么看开源大模型的出口管制？</code></pre>
+<p><b>唯一验收点：</b>它有没有先说「此非我世所有，姑以我法度之」，并在结尾声明这是框架推断、非本人立场。若它斩钉截铁地断言"荀子认为应当限制"，那是冒充。</p>
+
+<!-- ============ 第七章 ============ -->
+<h2>第七章　读懂它的回答：四段式与五个验收问题</h2>
+
+<table>
+<thead><tr><th style="width:14%">段</th><th style="width:40%">作用</th><th>长什么样</th></tr></thead>
+<tbody>
+<tr><td>① 断语</td><td>先给一个能被反驳的判断</td><td>「X，Y 也」「A 不如 B」</td></tr>
+<tr><td>② 分档</td><td>劈开问题，给轴与后果</td><td>「一档……二档……三档……」</td></tr>
+<tr><td>③ 证据</td><td>原话或史例，钉住</td><td>「《富国》曰：『群而无分则争。』」</td></tr>
+<tr><td>④ 收束</td><td>收紧，不给台阶</td><td>引经 / 命名 / 反问，三选一</td></tr>
+</tbody>
+</table>
+
+<h3>五个验收问题（照此自查，不要凭感觉）</h3>
+<ol>
+<li>第一句是不是判断，还是铺垫？</li>
+<li>有没有给出<b>轴</b>？只给三档不给轴 = 列清单。</li>
+<li>三档<b>能不能互换顺序</b>？能换 = 没轴，让它重做。</li>
+<li>结尾是引经 / 命名 / 反问之一，还是「综上所述」？</li>
+<li>有没有「可能」「也许」「在一定程度上」「底层逻辑」「赋能」？出现就是跑偏。</li>
+</ol>
+
+<h3>想让它改口，怎么说</h3>
+<table>
+<thead><tr><th style="width:44%">你说</th><th>它会做</th></tr></thead>
+<tbody>
+<tr><td>「重排，先给轴」</td><td>停下分档，先声明凭什么是这一档</td></tr>
+<tr><td>「这句是原文还是你的推断？」</td><td>标注来源；未核到的会承认未核到</td></tr>
+<tr><td>「给原话，不要转述」</td><td>引原句 + 篇名；引不出会说明该句未取到</td></tr>
+<tr><td>「这一段太软，收紧」</td><td>删缓和词，把限定改成「虽……不能……」式</td></tr>
+</tbody>
+</table>
+
+<!-- ============ 第八章 ============ -->
+<h2>第八章　长对话不掉人设与退出角色</h2>
+
+<h3>8.1 六个症状，六种改法</h3>
+<table>
+<thead><tr><th style="width:34%">症状</th><th style="width:26%">病在哪</th><th>改法</th></tr></thead>
+<tbody>
+<tr><td>结论挪到末尾</td><td>违反「第一句就下判断」</td><td>「结论提到第一句」</td></tr>
+<tr><td>三条并列、无轴</td><td>违反分档硬约束</td><td>「给轴，重排」</td></tr>
+<tr><td>出现「可能」「也许」</td><td>禁忌词</td><td>「删缓和词」</td></tr>
+<tr><td>结尾「综上所述」</td><td>收束失守</td><td>「换成反问收」</td></tr>
+<tr><td>「一方面……另一方面」</td><td>把「兼陈」误做成折中</td><td>「兼陈是两端同时摆上并指明我在哪端，不是各让一步」</td></tr>
+<tr><td>替你下价值判断</td><td>越出诚实边界</td><td>「退回功能层：否则会乱」</td></tr>
+</tbody>
+</table>
+
+<h3>8.2 退出角色</h3>
+<p>说 <b>「退出」</b>「切回正常」「不用扮演了」即恢复普通助手。</p>
+<div class="warn"><b>必须先退出的场合：</b>要精确数值、要查最新事实、要跑代码。角色扮演不替代检索与计算——让它用荀子的口吻算错一个数，是这个 skill 最没价值的用法。</div>
+
+<!-- ============ 第九章 ============ -->
+<h2>第九章　常见错误速查</h2>
+<table>
+<thead><tr><th style="width:30%">现象</th><th style="width:34%">最可能的原因</th><th>动作</th></tr></thead>
+<tbody>
+<tr><td>对话里没反应</td><td>用的是 DeepSeek 网页版</td><td>网页版无法加载本地技能，改用 dsh</td></tr>
+<tr><td>dsh 里没反应</td><td>旧会话未重载插件</td><td>重启 <code>dsh web</code>，<b>新开任务</b></td></tr>
+<tr><td>仍没反应</td><td>profile 不匹配（装到 web，跑的是 desktop）</td><td>用同一个 profile 重装并启动</td></tr>
+<tr><td>注册时报错找不到 skills 服务</td><td>没装仓颉，或仓颉装到了别的 profile</td><td>按第三章在同一 profile 重装仓颉</td></tr>
+<tr><td>回滚 / 卸载找不到命令</td><td>各版本子命令不同</td><td>先跑 <code>dsh plugin --help</code> 看当前版本的准确写法</td></tr>
+<tr><td>回答变成通用腔</td><td>问法太"百科"</td><td>换「以荀卿论之：X 该不该做？」</td></tr>
+<tr><td>它引的句子你翻书找不到</td><td>该句标注了「未取到原文」</td><td>见 12.3：只能给立场，不能给原话</td></tr>
+<tr><td>它说「人定胜天」是荀子的话</td><td>那是 2010 年编者的按语</td><td>要求改引「制天命而用之」+「唯圣人为不求知天」成对</td></tr>
+<tr><td>哈希对不上</td><td>下载不完整或被改</td><td>重新下载；不要"先装再说"</td></tr>
+</tbody>
+</table>
+
+<!-- ============ 第十章 ============ -->
+<h2>第十章　升级、回滚、卸载</h2>
+
+<h3>10.1 先看当前版本支持什么</h3>
+<pre><code>dsh plugin --help</code></pre>
+<p><b>不要跳过这一步。</b>Harness 是预览版，"移除"与"更新"的子命令在不同版本里写法可能不同；本文只保证 <code>add</code> 这一条在 0.2.1-rc.2 上可用。</p>
+
+<h3>10.2 升级</h3>
+<pre><code>:: 先移除旧插件（子命令以 --help 为准）
+dsh plugin --profile web &lt;remove 子命令&gt; dsh-xunzi-perspective
+
+:: 再装新的
+dsh plugin --profile web add .\dsh-xunzi-perspective-1.0.0.tgz
+dsh web</code></pre>
+<p class="small">升级后按第五章重新验证一遍。插件包是整份替换，不存在"部分更新"。</p>
+
+<h3>10.3 卸载</h3>
+<pre><code>dsh plugin --profile web &lt;remove 子命令&gt; dsh-xunzi-perspective</code></pre>
+<p>卸载只影响插件注册，不会动你另外装的仓颉。</p>
+
+<!-- ============ 第十一章 ============ -->
+<h2>第十一章　不装 Harness 也能用：纯本地路径</h2>
+
+<p>三种可行的替代，按推荐程度排列。</p>
+
+<h3>11.1 解压 TGZ 看内容（最简单）</h3>
+<pre><code>New-Item -ItemType Directory -Force C:\SkillLab\xunzi | Out-Null
+tar -xzf .\dsh-xunzi-perspective-1.0.0.tgz -C C:\SkillLab\xunzi</code></pre>
+<p>解压后应看到：</p>
+<pre><code>C:\SkillLab\xunzi\package\
+├── index.mjs
+├── cordis.patch.yml
+├── package.json
+├── README.md
+└── skills\xunzi-perspective\
+    ├── SKILL.md
+    └── references\ ...</code></pre>
+<p>此时你可以直接读 <code>skills\xunzi-perspective\references\quickstart.md</code> 与 <code>troubleshooting.md</code>——它们是纯文本，不需要任何宿主。</p>
+
+<h3>11.2 装到其它支持 SKILL.md 的客户端</h3>
+<p>把 <code>package\skills\xunzi-perspective</code> 整个目录复制到该客户端的 skills 目录，保持目录名不变、<code>SKILL.md</code> 在目录第一层。Codex 的具体路径见 Codex 版教程。</p>
+
+<h3>11.3 只当作"读书笔记"用</h3>
+<p>不装进任何客户端也可以：把 <code>SKILL.md</code> 当一份结构化的分析框架，对照它的六个心智模型自查你的方案。<b>这是最低成本、零故障的用法</b>，而且不依赖任何模型版本。</p>
+
+<!-- ============ 第十二章 ============ -->
+<h2 class="newpage">第十二章　附录</h2>
+
+<h3>12.1 文件清单（插件内）</h3>
+<table>
+<thead><tr><th style="width:52%">文件</th><th>作用</th></tr></thead>
+<tbody>
+<tr><td><code>index.mjs</code></td><td>适配器：读 SKILL.md、剥离 frontmatter、注册技能并指向资源目录</td></tr>
+<tr><td><code>cordis.patch.yml</code></td><td>bundle 补丁，声明插入 <code>xunzi-perspective-first-edition</code></td></tr>
+<tr><td><code>package.json</code></td><td>包元数据；<code>engines</code> 要求 Node <code>^22.19.0 || &gt;=24.0.0</code></td></tr>
+<tr><td><code>skills/xunzi-perspective/SKILL.md</code></td><td>入口：6 模型 / 9 启发式 / 示例对话 / 表达 DNA / 跑偏自检 / 6 对张力 / 诚实边界</td></tr>
+<tr><td><code>…/EDITION.json</code></td><td>版本号 + 每文件 SHA256</td></tr>
+<tr><td><code>…/references/quickstart.md</code></td><td>快速上手</td></tr>
+<tr><td><code>…/references/troubleshooting.md</code></td><td>故障排查</td></tr>
+<tr><td><code>…/references/research/</code> ×7</td><td>调研记录，逐字引文 + 书页号</td></tr>
+<tr><td><code>…/scripts/render_pages.py</code></td><td>底本按书页渲染 PNG（可选功能）</td></tr>
+</tbody>
+</table>
+
+<h3>12.2 篇名 ↔ 书页 ↔ PDF 页</h3>
+<p>回原书核对时用。<code>PDF 页 = 书页 + 13</code>。</p>
+<table>
+<thead><tr><th>篇</th><th>书页</th><th>PDF</th><th>篇</th><th>书页</th><th>PDF</th></tr></thead>
+<tbody>
+<tr><td>劝学</td><td>1</td><td>14</td><td>天论</td><td>265</td><td>278</td></tr>
+<tr><td>修身</td><td>13</td><td>26</td><td>正论</td><td>277</td><td>290</td></tr>
+<tr><td>不苟</td><td>25</td><td>38</td><td>礼论</td><td>300</td><td>313</td></tr>
+<tr><td>荣辱</td><td>37</td><td>50</td><td>乐论</td><td>325</td><td>338</td></tr>
+<tr><td>非相</td><td>53</td><td>66</td><td>解蔽</td><td>336</td><td>349</td></tr>
+<tr><td>非十二子</td><td>68</td><td>81</td><td>正名</td><td>357</td><td>370</td></tr>
+<tr><td>仲尼</td><td>81</td><td>94</td><td>性恶</td><td>375</td><td>388</td></tr>
+<tr><td>儒效</td><td>90</td><td>103</td><td>君子</td><td>391</td><td>404</td></tr>
+<tr><td>王制</td><td>114</td><td>127</td><td>成相</td><td>397</td><td>410</td></tr>
+<tr><td>富国</td><td>138</td><td>151</td><td>赋</td><td>420</td><td>433</td></tr>
+<tr><td>王霸</td><td>162</td><td>175</td><td>大略</td><td>428</td><td>441</td></tr>
+<tr><td>君道</td><td>189</td><td>202</td><td>宥坐</td><td>472</td><td>485</td></tr>
+<tr><td>臣道</td><td>209</td><td>222</td><td>子道</td><td>483</td><td>496</td></tr>
+<tr><td>致士</td><td>220</td><td>233</td><td>法行</td><td>490</td><td>503</td></tr>
+<tr><td>议兵</td><td>227</td><td>240</td><td>哀公</td><td>495</td><td>508</td></tr>
+<tr><td>强国</td><td>250</td><td>263</td><td>尧问</td><td>504</td><td>517</td></tr>
+</tbody>
+</table>
+
+<h3>12.3 引文核对与「未取到原文」清单</h3>
+<p>底本为方勇、李波 译注《荀子》（中华书局 2010），<b>受版权保护，不随本插件分发</b>。三个放置办法任选其一：</p>
+<ol>
+<li>放到 <code>…\skills\xunzi-perspective\references\sources\books\</code>（任意 <code>*.pdf</code> 会被自动识别）</li>
+<li>设环境变量 <code>XUNZI_PDF=绝对路径</code></li>
+<li>运行时加 <code>--pdf 绝对路径</code></li>
+</ol>
+<pre><code>py -3 scripts\render_pages.py --list-chapters
+py -3 scripts\render_pages.py --chapter 天论 --span 3 --out .\pages</code></pre>
+<div class="warn">
+<b>三处最容易被误引的句子</b>（skill 内已标为「只能给立场，不能给原话」）：<br>
+① 《劝学》「故学至乎礼而止矣」「其数则始乎诵经，终乎读礼」；<br>
+② 《性恶》「涂之人可以为禹」整段；③ 《乐论》「以道制欲，则乐而不乱」对偶句。<br>
+若它拿这些当确凿原话引用，直接指出「这句未核」，它会改用已核的替代引文。
+</div>
+
+<h3>12.4 项目与贡献者</h3>
+<p>
+仓库：<code>https://github.com/WEveboy/Xunzi-Still</code><br>
+发行：<code>https://github.com/WEveboy/Xunzi-Still/releases/tag/edition-v1.0.0</code><br>
+贡献者：WEveboy（发起、语料、流程与发布）· DeepSeek-V4.1（精读、提炼、撰写、验证）
+</p>
+<p class="small">本 skill 由「女娲 · Skill 造人术」流程生成：五路并行精读底本（逐字抄录原文并标书页）+ 外部考据 → 心智模型三重验证 → 构建 → 静态质检 6/6 → 独立盲测四题并据反馈修订。</p>
+
+<hr>
+<p class="small">Xunzi-Still · 第一版 · DeepSeek Harness 安装与使用教程 · 2026-10-30</p>
+
+</body>
+</html>

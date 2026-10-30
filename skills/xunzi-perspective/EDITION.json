@@ -1,0 +1,28 @@
+{
+  "project": "Xunzi Perspective Skill",
+  "display_name": "荀子·思维操作系统",
+  "public_version": "1.0.0",
+  "edition": 1,
+  "frozen_baseline": "1.0.0-dev",
+  "capabilities": {
+    "mental_models": 6,
+    "decision_heuristics": 9,
+    "unresolved_tensions": 6,
+    "research_documents": 7,
+    "runtime_programs": 1
+  },
+  "files": {
+    "README.md": "a8304cf25b0d439879ffc6bc99d2e4c94426a4791c366a4981304492dfbb7052",
+    "references/quickstart.md": "5628712b0fe0d6c23aa4f508c80a6f6bab65289421b40c6d76c29416bddd0ab0",
+    "references/research/01a-writings-cultivation.md": "8795a93ad0007612262470d41d3e765490889a9cb4b9dfd8c8c8f8dfcd699aec",
+    "references/research/01b-writings-politics.md": "f19257e0d0a21098313d2f575a1d083324cb356d412b60f8b21dc4fb4fc3ffd7",
+    "references/research/01c-writings-philosophy.md": "39b9a7934c8cfe30aee81a4371f5d03b16eba255375ed7438af87e130ff9c5ae",
+    "references/research/03-expression-dna.md": "a0e2103dbf2a8c9226a35853e2baaaef0d5fc7302962a27bf644302cff860c3b",
+    "references/research/04-external-views.md": "6b2868f76ada8b7f79f34780e6e82f9314ae396900db11361c3751fc650f6794",
+    "references/research/05-decisions.md": "cc3330409be43fa64915572544dfd1f23564d83454e84c8ead041e4e8fdb3be2",
+    "references/research/06-timeline.md": "2a36db65649bc135cad35429b1a307de2748e5aae8f229e12d93bcfccca5913d",
+    "references/troubleshooting.md": "013861460f505b924193b1b8eaa94cd750e362f0118ce21e4aa387f27f016850",
+    "scripts/render_pages.py": "9bf9446ab379c309da998fdc12bc3cd31341bd9c5bd4eeb0ace00ec39f4d3eb4",
+    "SKILL.md": "bd4f62d0c38768d25e1367af1b0cf6c28351863d9d1e5b2070dedf8232c0549e"
+  }
+}
