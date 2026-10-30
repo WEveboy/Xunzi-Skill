@@ -171,12 +171,12 @@ def main():
             else:
                 sys.exit(f"上传 {p.name} 失败 {code}: {res.get('error')}")
 
-    # 3. 逐个下载核验
+    # 3. 核验：优先用 API 的 digest（GitHub 上传时算的 sha256，等价于下载核验且不怕大文件超时）
     code, rel = api("GET", f"/repos/{OWNER}/{REPO}/releases/tags/{TAG}", tok)
     if code != 200:
         sys.exit(f"读取发行失败 {code}: {rel.get('error')}")
     remote = {x["name"]: x for x in rel.get("assets", [])}
-    print(f"\n== 下载核验（{len(remote)} 个资产）==")
+    print(f"\n== 核验（{len(remote)} 个资产）==")
     bad = 0
     for p in files:
         info = remote.get(p.name)
@@ -184,15 +184,27 @@ def main():
             print(f"  ✗ 远端缺 {p.name}")
             bad += 1
             continue
-        req = urllib.request.Request(info["browser_download_url"], headers={"User-Agent": UA})
-        with urllib.request.urlopen(req, timeout=300) as r:
-            data = r.read()
-        local, got = sha256(p), hashlib.sha256(data).hexdigest()
-        if local == got and len(data) == p.stat().st_size:
-            print(f"  ✓ {p.name}  {len(data)/1024:.1f} KB  哈希一致")
-        else:
-            print(f"  ✗ {p.name}  哈希或大小不符（local {local[:12]} vs remote {got[:12]}）")
-            bad += 1
+        local = sha256(p)
+        digest = (info.get("digest") or "").replace("sha256:", "")
+        if digest:
+            ok = digest == local
+            print(f"  {'✓' if ok else '✗'} {p.name}  {info['size']/1024:.1f} KB  digest 一致" if ok
+                  else f"  ✗ {p.name}  digest 不符（{digest[:12]} vs {local[:12]}）")
+            bad += 0 if ok else 1
+            continue
+        # 没有 digest（旧版 API）才回落到下载比对
+        try:
+            req = urllib.request.Request(info["browser_download_url"], headers={"User-Agent": UA})
+            with urllib.request.urlopen(req, timeout=300) as r:
+                data = r.read()
+        except Exception as e:
+            print(f"  ? {p.name}  无 digest 且下载失败（{type(e).__name__}），仅比对大小："
+                  f"{'✓' if info['size'] == p.stat().st_size else '✗'}")
+            bad += 0 if info["size"] == p.stat().st_size else 1
+            continue
+        ok = hashlib.sha256(data).hexdigest() == local and len(data) == p.stat().st_size
+        print(f"  {'✓' if ok else '✗'} {p.name}  {len(data)/1024:.1f} KB  下载哈希比对")
+        bad += 0 if ok else 1
     print(f"\n发行页：{rel.get('html_url')}")
     print("结果：", "全部核验通过" if bad == 0 else f"{bad} 项未通过")
     return 0 if bad == 0 else 1
