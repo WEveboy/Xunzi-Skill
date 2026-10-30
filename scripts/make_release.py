@@ -11,6 +11,7 @@
 
 写包用固定时间戳，保证同样的输入产出同样的字节（可复现构建）。
 """
+import gzip
 import hashlib
 import io
 import json
@@ -64,8 +65,14 @@ def build_zip(path: Path, entries):
 
 
 def build_tgz(path: Path, entries):
+    """tar + gzip 都要确定性：tar 头用固定 mtime，gzip 头 mtime 必须显式给 0。
+
+    注意：tarfile.open(mode="w:gz") 会把当前时间写进 gzip 头，导致同样的输入
+    每次构建出不同字节。必须自己套一层 GzipFile(mtime=0)。
+    """
     path.parent.mkdir(parents=True, exist_ok=True)
-    with tarfile.open(path, "w:gz") as tf:
+    raw = io.BytesIO()
+    with tarfile.open(fileobj=raw, mode="w") as tf:
         for src, arc in entries:
             data = src.read_bytes()
             info = tarfile.TarInfo(arc)
@@ -75,6 +82,11 @@ def build_tgz(path: Path, entries):
             info.uid = info.gid = 0
             info.uname = info.gname = ""
             tf.addfile(info, io.BytesIO(data))
+    with open(path, "wb") as f:
+        # filename="" 很关键：GzipFile 默认会把输出文件名写进 gzip 头（FNAME 字段），
+        # 那样同样的内容换个文件名就产出不同字节。
+        with gzip.GzipFile(filename="", fileobj=f, mode="wb", compresslevel=9, mtime=0) as gz:
+            gz.write(raw.getvalue())
     return path
 
 

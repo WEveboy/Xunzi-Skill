@@ -22,7 +22,7 @@ python scripts/install_codex.py --dry-run  # 只看会装到哪
 
 **DeepSeek Harness**：需先装 dsh 与仓颉（cangjie）插件，再添加本项目的 TGZ 插件。普通 DeepSeek 网页对话**没有**本地 skill 加载能力，网页版不能替代 Harness。
 
-发行资产与校验文件见 [edition-v1.0.0 Release](https://github.com/WEveboy/Xunzi-Skill/releases/tag/edition-v1.0.0)。若 Release 尚未显示，以实际发布记录为准——源码下载后也可按教程安装或自行打包。
+发行资产与校验文件已发布在 [edition-v1.0.0 Release](https://github.com/WEveboy/Xunzi-Skill/releases/tag/edition-v1.0.0)（5 个资产，均已回下载核验 SHA256）。源码下载后也可按教程安装或自行打包。
 
 ## 这个 Skill 有什么
 

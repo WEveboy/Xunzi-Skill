@@ -112,6 +112,32 @@ class InstallerTests(unittest.TestCase):
         self.assertIn("符号链接", str(ctx.exception))
 
 
+class ReleaseDeterminismTests(unittest.TestCase):
+    """发行包必须字节可复现：同样的输入两次构建哈希相同。
+
+    这里专门盯 gzip 头：tarfile.open(mode='w:gz') 会把当前时间写进 gzip 头，
+    导致每次构建哈希都变，且这种差异只在 tgz 与其外层 zip 上出现，极易漏测。
+    """
+
+    def test_tgz_is_byte_identical_across_builds(self):
+        import make_release as mr
+
+        tmp = Path(tempfile.mkdtemp(prefix="xz-det-"))
+        self.addCleanup(shutil.rmtree, tmp, True)
+        entries = [(p, p.name) for p in sorted((SKILL / "references").glob("*.md"))]
+        self.assertTrue(entries, "样本文件不能为空")
+        a = tmp / "a.tgz"
+        b = tmp / "b.tgz"
+        mr.build_tgz(a, entries)
+        import time
+
+        time.sleep(1.1)  # 跨过一秒，确保"用当前时间"的实现会暴露差异
+        mr.build_tgz(b, entries)
+        self.assertEqual(hashlib.sha256(a.read_bytes()).hexdigest(),
+                         hashlib.sha256(b.read_bytes()).hexdigest(),
+                         "tgz 不可复现：gzip 头 mtime 未固定")
+
+
 class EditionConsistencyTests(unittest.TestCase):
     def test_edition_matches_files_on_disk(self):
         """EDITION.json 必须与 skills/ 下实际文件一致（改文件后要重跑 rebuild_skill.py）。"""

@@ -37,3 +37,9 @@
 - 底本精读约 100 页（全书 526 页），非通读；未取到原文的 8 处已在 SKILL.md 列明。
 - 生卒年、游齐年龄、《性恶》作者归属均存学术争议，SKILL.md 如实并列而不裁断。
 - 秩序论证为功能主义（"否则会乱"），非价值论证；等级化默认值是结构性盲区，已在「诚实边界」标注。
+
+### 发布
+
+- 仓库：`https://github.com/WEveboy/Xunzi-Skill`（第一版期间由 `Xunzi-Still` 改名而来，旧链接由 GitHub 自动重定向）
+- 发行：`edition-v1.0.0`，5 个资产（Codex ZIP / DeepSeek TGZ / DeepSeek ZIP / 源码 ZIP / SHA256SUMS.txt），上传后逐个回下载核验哈希通过。
+- 项目名统一为 **Xunzi-Skill**；代码、文档、教程 PDF、插件 `package.json` 与发布脚本的常量均已同步。
