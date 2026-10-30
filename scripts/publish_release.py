@@ -17,6 +17,7 @@ import hashlib
 import json
 import os
 import subprocess
+import time
 import sys
 import urllib.error
 import urllib.parse
@@ -55,9 +56,9 @@ def token():
              "或先用 git push 让凭据管理器存一次")
 
 
-def api(method, path, tok, data=None, raw=None, ctype="application/json"):
+def api(method, path, tok, data=None, raw=None, ctype="application/json", tries=5):
+    """带重试：代理偶发 502/SSL EOF 时不要整个发布流程前功尽弃。"""
     url = path if path.startswith("http") else API + path
-    body = None
     headers = {
         "Authorization": f"Bearer {tok}",
         "Accept": "application/vnd.github+json",
@@ -70,14 +71,23 @@ def api(method, path, tok, data=None, raw=None, ctype="application/json"):
     elif data is not None:
         body = json.dumps(data).encode()
         headers["Content-Type"] = "application/json"
-    req = urllib.request.Request(url, data=body, headers=headers, method=method)
-    try:
-        with urllib.request.urlopen(req, timeout=180) as r:
-            payload = r.read()
-            return r.status, (json.loads(payload) if payload else {})
-    except urllib.error.HTTPError as e:
-        detail = e.read().decode("utf-8", "replace")[:600]
-        return e.code, {"error": detail}
+    else:
+        body = None
+    last = None
+    for i in range(tries):
+        try:
+            req = urllib.request.Request(url, data=body, headers=headers, method=method)
+            with urllib.request.urlopen(req, timeout=300) as r:
+                payload = r.read()
+                return r.status, (json.loads(payload) if payload else {})
+        except urllib.error.HTTPError as e:
+            detail = e.read().decode("utf-8", "replace")[:600]
+            return e.code, {"error": detail}
+        except Exception as e:  # 网络层抖动（502 / SSL EOF / 超时）
+            last = e
+            print(f"    重试 {i + 1}/{tries}（{type(e).__name__}）")
+            time.sleep(4 * (i + 1))
+    return 0, {"error": f"连续失败：{last}"}
 
 
 def sha256(p):

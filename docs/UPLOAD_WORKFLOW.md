@@ -25,9 +25,21 @@
 ## 本仓库的具体约定
 
 - **版本一致性是硬门**：`EDITION.json` 记录 skill 内每个文件的 SHA256，安装器据此拒绝安装。改过 `skills/` 下任何文件而未重跑 `scripts/rebuild_skill.py`，第 3 步的 `--check` 会失败，测试也会失败。这是有意的摩擦。
+- **发行包必须字节可复现**：`make_release.py` 对 zip 与 tar 都用固定时间戳，gzip 头还固定了 `mtime=0` 与 `filename=""`（否则同样的内容换个文件名就产出不同哈希）。`tests/test_install.py` 的 `ReleaseDeterminismTests` 守着这一条；任何一次"同样输入不同哈希"都要当缺陷处理，不能当噪音。
 - **不新增 LICENSE**：用户未指定许可；上游依赖按上游许可自行下载安装，不随本项目再分发。
 - **底本不入库**：与纠错码仓库同一策略。调研记录里的逐字引文已覆盖全部被引原文，缺底本不影响使用。
-- **发布方式**：本仓库第一版采用本地已认证客户端的 GitHub API 发布 Release（CI 令牌法在纠错码仓库用过，本仓库为纯文档型，暂不引入 Actions）。
+- **发布方式**：本仓库第一版采用 GitHub API 发布 Release（`scripts/publish_release.py`），CI 令牌法在纠错码仓库用过，本仓库为纯文档型，暂不引入 Actions。
+
+## 网络受限时的两条备援
+
+本机出现过「`api.github.com` 通、`github.com` 返回 502 / CONNECT tunnel failed」的情况。此时：
+
+| 环节 | 正常做法 | 备援 |
+|---|---|---|
+| 提交推送 | `git push` | `python scripts/push_via_api.py --files <改动文件...>`——走 Git Data API 建 blob/tree/commit 并更新 ref，等价于 push。跑完本地与远端"内容相同、commit 不同"，网络恢复后 `git fetch origin && git reset --hard origin/main` 对齐 |
+| 资产核验 | 逐个下载算 SHA256 | 读 Release API 的 `assets[].digest`（`sha256:...`），与本地哈希比对；GitHub 在上传时计算，等价于下载核验 |
+
+`publish_release.py` 的所有请求都带重试（4/8/12/16 秒退避），代理抖动不会让上传半途作废。
 
 ## 校验命令一览
 
